@@ -395,3 +395,103 @@ wordcloud = WordCloud(width = 1000,
                       background_color="blue").generate(data_for_wordcloud_preprocessed_string_dw) 
 
 wordcloud.to_file("DW_WordCloud.png")
+
+#-----------Настоящее Время-------------
+
+search_result_1 = get_youtube_search(query = "Настоящее Время", order = "viewCount", regionCode = "RU", channel_id = 'UCBG57608Hukev3d0d-gvLhQ')
+search_result_1_df = pd.DataFrame.from_dict(search_result_1['items'])
+
+search_result_2 = get_youtube_search(query = "", order = "viewCount", regionCode = "RU", channel_id = 'UCBG57608Hukev3d0d-gvLhQ')
+search_result_2_df = pd.DataFrame.from_dict(search_result_2['items'])
+
+search_result_3 = get_youtube_search(query = "репортаж", order = "viewCount", regionCode = "RU", channel_id = 'UCBG57608Hukev3d0d-gvLhQ')
+search_result_3_df = pd.DataFrame.from_dict(search_result_3['items'])
+
+search_result_4 = get_youtube_search(query = "новости", order = "viewCount", regionCode = "RU", channel_id = 'UCBG57608Hukev3d0d-gvLhQ')
+search_result_4_df = pd.DataFrame.from_dict(search_result_4['items'])
+
+data_for_wordcloud = []
+
+for i in range(1,search_result_1_df.shape[0]):
+    title = search_result_1_df.snippet[i]['title']
+    title = title.split('|')[0]
+    data_for_wordcloud.append(title)
+    
+for i in range(1,search_result_2_df.shape[0]):
+    title = search_result_2_df.snippet[i]['title']
+    title = title.split('|')[0]
+    data_for_wordcloud.append(title)
+    
+for i in range(1,search_result_3_df.shape[0]):
+    title = search_result_3_df.snippet[i]['title']
+    title = title.split('|')[0]
+    data_for_wordcloud.append(title)
+
+for i in range(1,search_result_4_df.shape[0]):
+    title = search_result_4_df.snippet[i]['title']
+    title = title.split('|')[0]
+    data_for_wordcloud.append(title)
+    
+data_for_wordcloud_set = set(data_for_wordcloud)
+
+data_for_wordcloud_preprocessed = []
+for title in data_for_wordcloud_set:
+    title = title.lower()
+    title = title.replace('&quot;','')
+    title = title.replace('специальный репортаж','')
+    title = title.replace('документальный фильм','')
+    title = title.replace('последние','')
+    title = title.replace('новости','')
+    title = title.replace('"','')
+    title = title.replace('репортаж','')
+    title = title.replace('dw','')
+    title = title.replace(' на ',' ')
+    title = title.replace(' не ',' ')
+    title = title.replace(' из ',' ')
+    title = title.replace(' за ',' ')
+    title = title.replace(' для ',' ')
+    title = title.replace(' по ',' ')
+    title = title.replace(' от ',' ')
+    title = title.replace('россии','россия')
+    title = title.replace('путина','путин')
+    title = title.replace('путину','путин')
+    title = title.replace('москве','москва')
+    title = title.replace('москву','москва')
+    title = title.replace('навального','навальный')
+    title = title.replace('навальным','навальный')
+    title = title.replace('владимира','владимир')
+    title = title.replace('коронавируса','коронавирус')
+    title = title.replace('беларуси','беларусь')
+    title = title.replace('германии','германия')
+    title = title.replace('германию','германия')
+    title = title.replace('кремля','кремль')
+    title = title.replace('санкций','санкции')
+    title = title.replace('таджикистана','таджикистан')
+    title = title.replace('таджикистане','таджикистан')
+    title = title.replace('казахстана','казахстан')
+    title = title.replace('казахстане','казахстан')
+    title = title.replace('кыргызстана','кыргызстан')
+    title = title.replace('кыргызстане','кыргызстан')
+    title = title.replace('хабаровского','хабаровск')
+    title = title.replace('хабаровске','хабаровск')
+    title = title.replace(': ',' ')
+    title = title.replace('.',' ')
+    data_for_wordcloud_preprocessed.append(title)
+    
+    
+data_for_wordcloud_preprocessed_string_nt = ''
+for title in data_for_wordcloud_preprocessed:
+    data_for_wordcloud_preprocessed_string_nt = data_for_wordcloud_preprocessed_string_nt + title + ' '
+    
+wordcloud = WordCloud(width = 1000, 
+                      height = 500, 
+                      max_font_size=400, 
+                      max_words=200,
+                      color_func=lambda *args, **kwargs: "darkblue",
+                      relative_scaling=0.5,
+                      background_color="white").generate(data_for_wordcloud_preprocessed_string_nt)
+
+wordcloud.to_file("NT_WordCloud.png")
+
+
+
